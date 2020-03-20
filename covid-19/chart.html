@@ -1,0 +1,65 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Test</title>
+<script type="text/javascript" src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+<script type="text/javascript">
+    window.onload = function() {
+        $.get("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv", function(data) {
+            data=data.split(/\r?\n/);
+            datum=[];
+            chartdata=[];
+            for(i=0; i<data.length; i++){
+                d=data[i].split(/,/);
+                if(d[1].match(/Country.Region/)){
+                    for(j=4;j<d.length;j++){
+                        datum.push(j-4);
+                    }
+                }
+                if(d[1].match(/Germany|Sweden|^Franc$|Czech|Italy|Spain|Austria|Poland/)){
+                    a=[];
+                    for(j=4;j<d.length;j++){
+                        a.push({x: j-4, y: parseInt(d[j])});
+                    }
+                    chartdata.push({
+                        name: d[1],
+                        type: "spline",
+                        showInLegend: true,
+                        dataPoints: a
+                    });
+                }
+            }
+            
+            var chart = new CanvasJS.Chart("chartContainer", {
+                title: {
+                     text: "COVID-19",
+                },
+                legend:{
+                    cursor:"pointer",
+                    itemclick : toggleDataSeries
+                },
+
+                data: chartdata
+            });
+            
+            chart.render();
+        function toggleDataSeries(e) {
+            if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible ){
+                e.dataSeries.visible = false;
+            } else {
+                e.dataSeries.visible = true;
+            }
+            chart.render();
+        }
+
+        });
+        
+    }
+</script>
+</head>
+<body>
+	<div id="chartContainer" style="width:100%; height:300px;"></div>
+</body>
+</html>
