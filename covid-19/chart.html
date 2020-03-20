@@ -18,10 +18,12 @@
                         datum.push(new Date(d[j]));
                     }
                 }
-                if((d[0]+d[1]).match(/Germany|Sweden|FranceFra|Japan|Korea|Czech|Italy|Spain|Austria|Poland/)){
+                if((d[0]+d[1]).match(/Germany|Sweden|FranceFra|Japan|Korea|Czech|Italy|Spain|Austria|Poland|Slovaki|Switzerland|HubeiChina/)){
                     a=[];
+                    name=d[1];
+                    if(d[0]) name=d[0];
                     if(d[1].match(/Korea/)){
-						d[1]="South Korea";
+						name="South Korea";
 						for(j=5;j<d.length;j++){
 							a.push({x: datum[j-5], y: parseInt(d[j])});
 						}						
@@ -30,8 +32,9 @@
 							a.push({x: datum[j-4], y: parseInt(d[j])});
 						}
 					}
+					
                     chartdata1.push({
-                        name: d[1],
+                        name: name,
                         type: "spline",
                         showInLegend: true,
                         dataPoints: a
