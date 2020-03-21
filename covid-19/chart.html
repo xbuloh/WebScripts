@@ -11,6 +11,8 @@
             data=data.split(/\r?\n/);
             datum=[];
             chartdata1=[];
+            chartdata2=[];
+            chartdata3=[];
             for(i=0; i<data.length; i++){
                 d=data[i].split(/,/);
                 if(d[1].match(/Country.Region/)){
@@ -19,17 +21,27 @@
                     }
                 }
                 if((d[0]+d[1]).match(/Germany|Sweden|FranceFra|Japan|Korea|Czech|Italy|Spain|Austria|Poland|Slovaki|Switzerland|HubeiChina/)){
-                    a=[];
+                    a1=[];
+                    a2=[];
+                    a3=[];
                     name=d[1];
                     if(d[0]) name=d[0];
                     if(d[1].match(/Korea/)){
 						name="South Korea";
 						for(j=5;j<d.length;j++){
-							a.push({x: datum[j-5], y: parseInt(d[j])});
+							a1.push({x: datum[j-5], y: parseInt(d[j])});
+							if(j>=5+5)
+								a2.push({x: datum[j-5], y: parseInt(d[j])-parseInt(d[j-5])});
+							if(j>=5+1)
+								a3.push({x: datum[j-5], y: parseInt(d[j])-parseInt(d[j-1])});
 						}						
 					} else {
 						for(j=4;j<d.length;j++){
-							a.push({x: datum[j-4], y: parseInt(d[j])});
+							a1.push({x: datum[j-4], y: parseInt(d[j])});
+							if(j>=4+5)
+								a2.push({x: datum[j-4], y: parseInt(d[j])-parseInt(d[j-5])});
+							if(j>=4+1)
+								a3.push({x: datum[j-4], y: parseInt(d[j])-parseInt(d[j-1])});
 						}
 					}
 					
@@ -37,14 +49,26 @@
                         name: name,
                         type: "spline",
                         showInLegend: true,
-                        dataPoints: a
+                        dataPoints: a1
+                    });
+                    chartdata2.push({
+                        name: name,
+                        type: "spline",
+                        showInLegend: true,
+                        dataPoints: a2
+                    });
+                    chartdata3.push({
+                        name: name,
+                        type: "spline",
+                        showInLegend: true,
+                        dataPoints: a3
                     });
                 }
             }
             
             var chart1 = new CanvasJS.Chart("chartContainer1", {
                 title: {
-                     text: "COVID-19",
+                     text: "COVID-19 Confirmed",
                 },
                 legend:{
                     cursor:"pointer",
@@ -53,8 +77,33 @@
 
                 data: chartdata1
             });
-            
             chart1.render();
+            
+            var chart2 = new CanvasJS.Chart("chartContainer2", {
+                title: {
+                     text: "COVID-19 Conf / 5 days difference",
+                },
+                legend:{
+                    cursor:"pointer",
+                    itemclick : toggleDataSeries
+                },
+
+                data: chartdata2
+            });
+            chart2.render();
+
+            var chart3 = new CanvasJS.Chart("chartContainer3", {
+                title: {
+                     text: "COVID-19 Conf / 1 days difference",
+                },
+                legend:{
+                    cursor:"pointer",
+                    itemclick : toggleDataSeries
+                },
+
+                data: chartdata3
+            });
+            chart3.render();
             
 			function toggleDataSeries(e) {
 				if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible ){
@@ -63,6 +112,8 @@
 					e.dataSeries.visible = true;
 				}
 				chart1.render();
+				chart2.render();
+				chart3.render();
 			}
 
         });
@@ -72,5 +123,9 @@
 </head>
 <body>
 	<div id="chartContainer1" style="width:100%; height:400px;"></div>
+	<br /><br />
+	<div id="chartContainer2" style="width:100%; height:400px;"></div>
+	<br /><br />
+	<div id="chartContainer3" style="width:100%; height:400px;"></div>
 </body>
 </html>
