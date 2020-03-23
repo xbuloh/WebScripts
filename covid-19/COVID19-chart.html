@@ -26,24 +26,24 @@
                     name=d[1];
                     if(d[0]) name=d[0];
                     if(d[1].match(/Korea/)){
-						name="South Korea";
-						for(j=5;j<d.length;j++){
-							a1.push({x: datum[j-5], y: parseInt(d[j])});
-							if(j>=5+5)
-								a2.push({x: datum[j-5], y: parseInt(d[j])-parseInt(d[j-5])});
-							if(j>=5+1)
-								a3.push({x: datum[j-5], y: parseInt(d[j])-parseInt(d[j-1])});
-						}						
-					} else {
-						for(j=4;j<d.length;j++){
-							a1.push({x: datum[j-4], y: parseInt(d[j])});
-							if(j>=4+5)
-								a2.push({x: datum[j-4], y: parseInt(d[j])-parseInt(d[j-5])});
-							if(j>=4+1)
-								a3.push({x: datum[j-4], y: parseInt(d[j])-parseInt(d[j-1])});
-						}
-					}
-					
+                        name="South Korea";
+                        for(j=5;j<d.length;j++){
+                            a1.push({x: datum[j-5], y: parseInt(d[j])});
+                            if(j>=5+5)
+                                a2.push({x: datum[j-5], y: parseInt(d[j])-parseInt(d[j-5])});
+                            if(j>=5+1)
+                                a3.push({x: datum[j-5], y: parseInt(d[j])-parseInt(d[j-1])});
+                        }						
+                    } else {
+                        for(j=4;j<d.length;j++){
+                            a1.push({x: datum[j-4], y: parseInt(d[j])});
+                            if(j>=4+5)
+                                a2.push({x: datum[j-4], y: parseInt(d[j])-parseInt(d[j-5])});
+                            if(j>=4+1)
+                                a3.push({x: datum[j-4], y: parseInt(d[j])-parseInt(d[j-1])});
+                        }
+                    }
+                    
                     chartdata1.push({
                         name: name,
                         type: "spline",
@@ -103,17 +103,22 @@
                 data: chartdata3
             });
             chart3.render();
-            
-			function toggleDataSeries(e) {
-				if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible ){
-					e.dataSeries.visible = false;
-				} else {
-					e.dataSeries.visible = true;
-				}
-				chart1.render();
-				chart2.render();
-				chart3.render();
-			}
+
+            function toggleDataSeries(e) {
+                for(i=0; i<chart3.data.length; i++){
+                    d=chart3.data[i];
+                    if(e.dataSeries.name == d.name)
+                        if (typeof(d.visible) === "undefined" || d.visible ){
+                            chart1.data[i].set("visible",false);
+                            chart2.data[i].set("visible",false);
+                            chart3.data[i].set("visible",false);
+                        } else {
+                            chart1.data[i].set("visible",true);
+                            chart2.data[i].set("visible",true);
+                            chart3.data[i].set("visible",true);
+                        }
+                }
+            }
 
         });
         
@@ -121,10 +126,10 @@
 </script>
 </head>
 <body>
-	<div id="chartContainer1" style="width:100%; height:400px;"></div>
-	<br /><br />
-	<div id="chartContainer2" style="width:100%; height:400px;"></div>
-	<br /><br />
-	<div id="chartContainer3" style="width:100%; height:400px;"></div>
+    <div id="chartContainer1" style="width:100%; height:400px;"></div>
+    <br /><br />
+    <div id="chartContainer2" style="width:100%; height:400px;"></div>
+    <br /><br />
+    <div id="chartContainer3" style="width:100%; height:400px;"></div>
 </body>
 </html>
