@@ -93,6 +93,8 @@
                 },
                 legend:{
                     cursor:"pointer",
+                    itemmouseover: thickup,
+                    itemmouseout: thickdown,
                     itemclick : toggleDataSeries
                 },
 
@@ -106,6 +108,8 @@
                 },
                 legend:{
                     cursor:"pointer",
+                    itemmouseover: thickup,
+                    itemmouseout: thickdown,
                     itemclick : toggleDataSeries
                 },
 
@@ -119,6 +123,8 @@
                 },
                 legend:{
                     cursor:"pointer",
+                    itemmouseover: thickup,
+                    itemmouseout: thickdown,
                     itemclick : toggleDataSeries
                 },
 
@@ -127,21 +133,35 @@
             chart3.render();
 
             function toggleDataSeries(e) {
-                for(i=0; i<chart3.data.length; i++){
-                    d=chart3.data[i];
-                    if(e.dataSeries.name == d.name)
-                        if (typeof(d.visible) === "undefined" || d.visible ){
-                            chart1.data[i].set("visible",false);
-                            chart2.data[i].set("visible",false);
-                            chart3.data[i].set("visible",false);
-                        } else {
-                            chart1.data[i].set("visible",true);
-                            chart2.data[i].set("visible",true);
-                            chart3.data[i].set("visible",true);
-                        }
-                }
+				i=e.dataSeriesIndex;
+				d=chart3.data[i];
+				if (typeof(d.visible) === "undefined" || d.visible ){
+					chart1.data[i].set("visible",false);
+					chart2.data[i].set("visible",false);
+					chart3.data[i].set("visible",false);
+				} else {
+					chart1.data[i].set("visible",true);
+					chart2.data[i].set("visible",true);
+					chart3.data[i].set("visible",true);
+				}
             }
+            
+            function thickup(e) {
+				i=e.dataSeriesIndex;
+				w = chart1.data[i].get("lineThickness");
+				chart1.data[i].set("lineThickness", 2*w);
+				chart2.data[i].set("lineThickness", 2*w);
+				chart3.data[i].set("lineThickness", 2*w);
+			}
 
+            function thickdown(e) {
+				i=e.dataSeriesIndex;
+				w = chart1.data[i].get("lineThickness");
+				chart1.data[i].set("lineThickness", w/2);
+				chart2.data[i].set("lineThickness", w/2);
+				chart3.data[i].set("lineThickness", w/2);
+			}
+			
         });
         
     }
