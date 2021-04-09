@@ -46,8 +46,8 @@
 							part=100./inhabitants[d[0]+d[1]];
 							for(j=5;j<d.length;j++){
 								a1.push({x: datum[j-5], y: part*parseInt(d[j])});
-								if(j>=5+5)
-									a2.push({x: datum[j-5], y: part*(parseInt(d[j])-parseInt(d[j-5]))});
+								if(j>=5+7)
+									a2.push({x: datum[j-5], y: part*(parseInt(d[j])-parseInt(d[j-7]))});
 								if(j>=5+1)
 									a3.push({x: datum[j-5], y: part*(parseInt(d[j])-parseInt(d[j-1]))});
 							}						
@@ -55,8 +55,8 @@
 							part=100./inhabitants[d[0]+d[1]];
 							for(j=4;j<d.length;j++){
 								a1.push({x: datum[j-4], y: part*parseInt(d[j])});
-								if(j>=4+5)
-									a2.push({x: datum[j-4], y: part*(parseInt(d[j])-parseInt(d[j-5]))});
+								if(j>=4+7)
+									a2.push({x: datum[j-4], y: part*(parseInt(d[j])-parseInt(d[j-7]))});
 								if(j>=4+1)
 									a3.push({x: datum[j-4], y: part*(parseInt(d[j])-parseInt(d[j-1]))});
 							}
@@ -105,7 +105,7 @@
             
             var chart2 = new CanvasJS.Chart("chartContainer2", {
                 title: {
-                     text: "COVID-19 Conf per 100k / 5 days difference",
+                     text: "COVID-19 Conf per 100k / 7 days difference",
                 },
                 legend:{
                     cursor:"pointer",
